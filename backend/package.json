@@ -1,0 +1,19 @@
+{
+  "name": "rocketseat_goStack",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "repository": "https://github.com/alancritelli/rocketseat_goStack.git",
+  "author": "Alan Critelli <alancritelli@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "dev": "nodemon src/index.js"
+  },
+
+  "dependencies": {
+    "express": "^5.1.0"
+  },
+
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
+}
