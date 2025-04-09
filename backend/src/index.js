@@ -1,12 +1,35 @@
 const express = require('express')
-const { v4: uuid } = require('uuid')
-
+const { v4: uuid, validate } = require('uuid') // Use 'validate' instead of 'isUuid'
 
 const app = express()
 
 app.use(express.json())
 
 const projects = []
+
+function logRequests(req, res, next) {
+  const { method, url } = req
+
+  const logLabel = `[${method.toUpperCase()}] ${url}`
+
+  console.time(logLabel)
+  next()
+  console.timeEnd(logLabel)
+}
+
+function validateProjectId(req, res, next) {
+  const { id } = req.params
+
+  if (!validate(id)) {
+    // Use 'validate' to check if the ID is a valid UUID
+    return res.status(400).json({ error: 'Invalid project ID' })
+  }
+
+  next()
+}
+
+app.use(logRequests)
+app.use('/projects/:id', validateProjectId)
 
 //ROUTES
 app.get('/projects', (req, res) => {
@@ -56,10 +79,8 @@ app.delete('/projects/:id', (req, res) => {
 
   projects.splice(projectIndex, 1)
 
- res.status(204).send()
+  res.status(204).send()
 })
-
-
 
 app.listen(3333, () => {
   console.log('Backend iniciado 🚀')
